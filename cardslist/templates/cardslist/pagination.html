@@ -1,0 +1,9 @@
+<div class="pagination">
+    {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a>
+    {% endif %}
+    <p>{{ page.number }}</p>
+    {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
+    {% endif %}
+</div>
