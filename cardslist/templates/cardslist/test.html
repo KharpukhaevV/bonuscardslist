@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if query %}
+    <h1>posts {{ query }}</h1>
+
+    {% for post in results %}
+    <h4>
+        {{ post.card_number }}
+    </h4>
+    {% empty %}
+    <p> asdf</p>
+    {% endfor %}
+    {% else %}
+    <h1>search</h1>
+    <form action="." method="get">
+        {{ form.as_p }}
+        <input type="submit" value="Search">
+    </form>
+    {% endif %}
+</body>
+</html>

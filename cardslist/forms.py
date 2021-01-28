@@ -17,13 +17,5 @@ class CreateCardsForm(forms.ModelForm):
         fields = ('cards_series', 'number_of_cards', 'cards_duration', 'bonus_amount')
 
 
-class CreateSearchForm(forms.Form):
-    searchfield = forms.CharField(max_length=16)
-
-    class Meta:
-        fields = 'searchfield'
-        widgets = {'searchfield': TextInput(attrs={
-                'class': 'form-control form-control-dark w-50',
-                'type': 'text',
-                'placeholder': 'Поиск',
-                'aria-label': 'Search'})}
+class SearchForm(forms.Form):
+    query = forms.CharField(max_length=16)
