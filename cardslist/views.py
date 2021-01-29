@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 from .models import Cardslist
 from .forms import CreateCardsForm, SearchForm
@@ -19,15 +20,19 @@ class CardDetailView(LoginRequiredMixin, DetailView):
 
 @login_required()
 def index(request):
-    search_form = SearchForm()
-    cards = Cardslist.objects.all()
-    paginator = Paginator(cards, 15)
-    if 'page' in request.GET:
-        page_num = request.GET['page']
+    search_query = request.GET.get('search', '')
+    if search_query:
+        cards = Cardslist.objects.filter(Q(card_series=search_query) | Q(card_number=search_query))
+        context = {'cards': cards}
     else:
-        page_num = 1
-    page = paginator.get_page(page_num)
-    context = {'cards': page.object_list, 'page': page, 'form': search_form}
+        cards = Cardslist.objects.all()
+        paginator = Paginator(cards, 19)
+        if 'page' in request.GET:
+            page_num = request.GET['page']
+        else:
+            page_num = 1
+        page = paginator.get_page(page_num)
+        context = {'cards': page.object_list, 'page': page}
     return render(request, 'cardslist/index.html', context)
 
 
