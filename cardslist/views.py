@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.postgres.search import SearchVector
 
 from .models import Cardslist
 from .forms import CreateCardsForm, SearchForm
@@ -77,14 +76,3 @@ def activate(request, pk):
     card.save()
     return HttpResponseRedirect(reverse('index'))
 
-
-def post_search(request):
-    form = SearchForm()
-    query = None
-    results = []
-    if 'query' in request.GET:
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            results = Cardslist.objects.annotate(search=SearchVector('card_number')).filter(search=query)
-    return render(request, 'cardslist/test.html', {'form': form, 'query': query, 'results': results})

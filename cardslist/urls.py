@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from .views import index, CardDetailView, add_and_save, delete, activate, post_search
+from .views import index, CardDetailView, add_and_save, delete, activate
 
 
 urlpatterns = [
@@ -10,5 +10,4 @@ urlpatterns = [
     path('del/<int:pk>', delete, name='delete'),
     path('activate/<int:pk>', activate, name='activate'),
     path('accounts/logout/', LogoutView.as_view(next_page=index), name='logout'),
-    path('test/', post_search, name='search')
 ]
