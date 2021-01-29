@@ -1,9 +1,21 @@
 <div class="pagination">
-    {% if page.has_previous %}
+
+    <a href="?page=1">1 </a>
+
+    {% if page.has_previous and page.previous_page_number != 1 %}
+        <p>..</p>
         <a href="?page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a>
     {% endif %}
-    <p>{{ page.number }}</p>
-    {% if page.has_next %}
-        <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
+
+    {% if page.number != 1 and page.number != p.num_pages%}
+        <p>{{ page.number }} </p>
     {% endif %}
+
+    {% if page.has_next and page.next_page_number != p.num_pages %}
+        <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
+        <p>..</p>
+    {% endif %}
+    
+    <a href="?page={{ p.num_pages }}">{{ p.num_pages }}</a>
+    
 </div>

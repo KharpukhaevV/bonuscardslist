@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 from .models import Cardslist
-from .forms import CreateCardsForm, SearchForm
+from .forms import CreateCardsForm
 from .services import calculation_of_the_card_validity_period, get_random_card_number
 
 
@@ -32,8 +32,31 @@ def index(request):
         else:
             page_num = 1
         page = paginator.get_page(page_num)
-        context = {'cards': page.object_list, 'page': page}
+        context = {'cards': page.object_list, 'page': page, 'p': paginator}
     return render(request, 'cardslist/index.html', context)
+
+
+@login_required()
+def activation(request):
+    if request.method == 'POST':
+        not_active_cards = request.POST.getlist('activate')
+        for pk in not_active_cards:
+            card = Cardslist.objects.get(pk=pk)
+            card.card_status = 'Активна'
+            card.save()
+    cards = Cardslist.objects.filter(card_status='Не активна')
+    context = {'cards': cards}
+    return render(request, 'cardslist/activation.html', context)
+
+
+@login_required()
+def activate_all(request):
+    cards = Cardslist.objects.filter(card_status='Не активна')
+    for card in cards:
+        card.card_status = 'Активна'
+        card.save()
+    return HttpResponseRedirect(reverse('index'))
+    
 
 
 @login_required()
@@ -67,7 +90,6 @@ def add_and_save(request):
 def delete(request, pk):
     card = Cardslist.objects.get(pk=pk)
     card.delete()
-
     return HttpResponseRedirect(reverse('index'))
 
 
