@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from .models import Cardslist
 from .forms import CreateCardsForm
-from .services import calculation_of_the_card_validity_period, get_random_card_number
+from .services import calculation_of_the_card_validity_period, get_random_card_number, pagination
 
 
 class CardDetailView(LoginRequiredMixin, DetailView):
@@ -26,13 +26,7 @@ def index(request):
         context = {'cards': cards}
     else:
         cards = Cardslist.objects.all()
-        paginator = Paginator(cards, 19)
-        if 'page' in request.GET:
-            page_num = request.GET['page']
-        else:
-            page_num = 1
-        page = paginator.get_page(page_num)
-        context = {'cards': page.object_list, 'page': page, 'p': paginator}
+        context = pagination(request, cards)
     return render(request, 'cardslist/index.html', context)
 
 
@@ -45,7 +39,7 @@ def activation(request):
             card.card_status = 'Активна'
             card.save()
     cards = Cardslist.objects.filter(card_status='Не активна')
-    context = {'cards': cards}
+    context = pagination(request, cards)
     return render(request, 'cardslist/activation.html', context)
 
 

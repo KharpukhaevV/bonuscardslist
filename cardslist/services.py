@@ -4,6 +4,7 @@ import string
 
 from datetime import datetime
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 
 from .models import Cardslist
 
@@ -29,3 +30,14 @@ def calculation_of_the_card_validity_period(months):
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime(year, month, day)
+
+
+def pagination(request, model):
+    paginator = Paginator(model, 19)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {'cards': page.object_list, 'page': page, 'p': paginator}
+    return context    
