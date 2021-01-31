@@ -2,11 +2,16 @@
 {% block title %}Активация карт{% endblock %}
 {% block content %}
 
+
+<h2>Карты</h2>
+<form action="{% url 'activation' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success" name="action">Активировать все</button>
+</form>
+<br>
 <form method="post">
 {% csrf_token %}
-<h2>Карты</h2>
 <button type="submit" class="btn btn-success">Активировать выбранные</button>
-<a href="{% url 'activate_all' %}"><button type="button" class="btn btn-success">Активировать все</button></a>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>

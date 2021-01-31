@@ -32,6 +32,20 @@ def calculation_of_the_card_validity_period(months):
     return datetime(year, month, day)
 
 
+def create_random_cards(form):
+    cards_series = form.cleaned_data.get('cards_series')
+    number_of_cards = form.cleaned_data.get('number_of_cards')
+    cards_duration = form.cleaned_data.get('cards_duration')
+    bonus_amount = form.cleaned_data.get('bonus_amount')
+
+    delta = int(cards_duration)
+    date = calculation_of_the_card_validity_period(delta)
+
+    for i in range(number_of_cards):
+        cards = get_random_card_number(cards_series, date, bonus_amount)
+        cards.save()
+
+
 def pagination(request, model):
     paginator = Paginator(model, 19)
     if 'page' in request.GET:
