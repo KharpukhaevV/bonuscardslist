@@ -6,14 +6,14 @@ from datetime import datetime
 from django.db import IntegrityError
 from django.core.paginator import Paginator
 
-from .models import Cardslist
+from .models import CardsList
 
 
 def get_random_card_number(series, date, amount):
     num = ''.join(random.choices(string.digits, k=8))
     n = int(str(series) + num)
     try:
-        cards = Cardslist(card_series=series,
+        cards = CardsList(card_series=series,
                           card_number=n,
                           card_expiration_date=date,
                           card_bonus_amount=amount,
@@ -54,4 +54,4 @@ def pagination(request, model):
         page_num = 1
     page = paginator.get_page(page_num)
     context = {'cards': page.object_list, 'page': page, 'p': paginator}
-    return context    
+    return context

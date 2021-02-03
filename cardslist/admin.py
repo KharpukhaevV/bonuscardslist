@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cardslist, Carddetail
+from .models import CardsList, CardDetail
 
 
 class CardsListAdmin(admin.ModelAdmin):
@@ -8,5 +8,9 @@ class CardsListAdmin(admin.ModelAdmin):
     search_fields = ('card_series', 'card_number')
 
 
-admin.site.register(Cardslist, CardsListAdmin)
-admin.site.register(Carddetail)
+class CardsDetailsAdmin(admin.ModelAdmin):
+    list_display = ('card', 'date_last_use', 'purchase_amount', 'changing_amount_bonuses')
+
+
+admin.site.register(CardsList, CardsListAdmin)
+admin.site.register(CardDetail, CardsDetailsAdmin)

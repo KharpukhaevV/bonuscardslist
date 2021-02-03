@@ -8,7 +8,3 @@ class CreateCardsForm(forms.Form):
                                                                            ('6', '6 месяцев'),
                                                                            ('1', '1 месяц'), ]))
     bonus_amount = forms.IntegerField(label='Сумма бонуса', max_value=2500)
-
-
-class SearchForm(forms.Form):
-    query = forms.CharField(max_length=16)
