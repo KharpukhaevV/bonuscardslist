@@ -3,16 +3,16 @@
 {% block content %}
     <div class="col-12">
         <h4>Карта</h4>
-        <p>Серия: {{ details.card_series }} Номер: {{ details.card_number }}. Статус: {{ details.card_status }}</p>
-        <p>Действительна от: {{ details.card_issue_date }} до: {{ details.card_expiration_date }}</p>
-        <p>Дата последнего использования: {{ details.card_date_of_use }}</p>
-        <p>Остаток бонусов на карте: {{ details.card_bonus_amount }}</p>
-        {% if details.card_status == 'Не активна' %}
-            <a href="{% url 'activate' details.pk %}"><button type="button" class="btn btn-success">Активировать</button></a>
-        {% elif details.card_status == 'Активна' %}
-            <a href="{% url 'activate' details.pk %}"><button type="button" class="btn btn-success">Деактивировать</button></a>
+        <p>Серия: {{ card_detail.card_series }} Номер: {{ card_detail.card_number }}. Статус: {{ card_detail.card_status }}</p>
+        <p>Действительна от: {{ card_detail.card_issue_date }} до: {{ card_detail.card_expiration_date }}</p>
+        <p>Дата последнего использования: {{ card_detail.card_date_of_use }}</p>
+        <p>Остаток бонусов на карте: {{ card_detail.card_bonus_amount }}</p>
+        {% if card_detail.card_status == 'Не активна' %}
+            <a href="{% url 'activate' card_detail.pk %}"><button type="button" class="btn btn-success">Активировать</button></a>
+        {% elif card_detail.card_status == 'Активна' %}
+            <a href="{% url 'activate' card_detail.pk %}"><button type="button" class="btn btn-success">Деактивировать</button></a>
         {% endif %}
-        <a href="{% url 'delete' details.pk %}"><button type="button" class="btn btn-danger">Удалить</button></a>
+        <a href="{% url 'delete' card_detail.pk %}"><button type="button" class="btn btn-danger">Удалить</button></a>
     </div>
     <br>
     <h4>История покупок</h4>
@@ -22,25 +22,19 @@
             <tr>
                 <th>Дата покупки</th>
                 <th>Сумма покупки</th>
-                <th>Бонусы</th>
+                <th>Изменение бонусов</th>
             </tr>
             </thead>
             <tbody>
+            {% for detail in details %}
+            {% if detail.card == card_detail %}
                 <tr>
-                    <td>asdfasgh</td>
-                    <td>fdsgjzcvb</td>
-                    <td>zdxfhtdy</td>
+                    <td>{{ detail.date_last_use }}</td>
+                    <td>{{ detail.purchase_amount }}</td>
+                    <td>{{ detail.changing_amount_bonuses }}</td>
                 </tr>
-                <tr>
-                    <td>adfhsrt</td>
-                    <td>oiyghj</td>
-                    <td>vbnmedr</td>
-                </tr>
-                <tr>
-                    <td>erydfgh</td>
-                    <td>cxvber</td>
-                    <td>yuiofhj</td>
-                </tr>
+            {% endif %}
+            {% endfor %}
             </tbody>
         </table>
     </div>

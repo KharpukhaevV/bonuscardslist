@@ -18,6 +18,12 @@ class CardsList(models.Model):
     def __str__(self):
         return 'Карта №' + str(self.card_number)
 
+    def test(self):
+        import datetime
+        if self.card_expiration_date < datetime.datetime.now():
+            self.card_status = 'Просрочена'
+            self.save()
+
 
 class CardDetail(models.Model):
     card = models.ForeignKey(CardsList, on_delete=models.CASCADE, verbose_name='Карта')
@@ -28,9 +34,10 @@ class CardDetail(models.Model):
     class Meta:
         verbose_name_plural = 'Детали карт'
         verbose_name = 'Детали карты'
-        ordering = ['-changing_amount_bonuses']
+        ordering = ['changing_amount_bonuses']
 
     def save(self, *args, **kwargs):
         self.card.card_date_of_use = self.date_last_use
+        self.card.card_bonus_amount += self.changing_amount_bonuses
         self.card.save()
         super(CardDetail, self).save(*args, **kwargs)

@@ -24,11 +24,11 @@ def get_random_card_number(series, date, amount):
 
 
 def calculation_of_the_card_validity_period(months):
-    sourcedate = datetime.now()
-    month = sourcedate.month - 1 + months
-    year = sourcedate.year + month // 12
+    source_date = datetime.now()
+    month = source_date.month - 1 + months
+    year = source_date.year + month // 12
     month = month % 12 + 1
-    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    day = min(source_date.day, calendar.monthrange(year, month)[1])
     return datetime(year, month, day)
 
 

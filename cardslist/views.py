@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
-from .models import CardsList
+from .models import CardsList, CardDetail
 from .forms import CreateCardsForm
 from .services import create_random_cards, pagination
 
@@ -14,7 +14,12 @@ from .services import create_random_cards, pagination
 class CardDetailView(LoginRequiredMixin, DetailView):
     model = CardsList
     template_name = 'cardslist/carddetails.html'
-    context_object_name = 'details'
+    context_object_name = 'card_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super(CardDetailView, self).get_context_data(**kwargs)
+        context['details'] = CardDetail.objects.all()
+        return context
 
     def delete_card(self, pk):
         card = CardsList.objects.get(pk=pk)
@@ -39,6 +44,8 @@ def index(request):
         context = {'cards': cards}
     else:
         cards = CardsList.objects.all()
+        for card in cards:
+            card.test()
         context = pagination(request, cards)
     return render(request, 'cardslist/index.html', context)
 
